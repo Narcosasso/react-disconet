@@ -47,18 +47,17 @@ function App() {
                 height: 120,
                 width: "100%",
                 textAlign: "center",
-                background: "linear-gradient(#FF007A,#4200FF)",
+                background: "linear-gradient(to top, #6a4a86, #4b0082)",
                 color: "white",
                 fontSize: 25,
                 paddingTop: 40,
-                fontFamily: "serif",
               }}
             >
               BELLINELLI86
             </div>
           }
           extra={
-            <Button type="primary" style={{ backgroundColor: "purple" }}>
+            <Button type="primary" style={{ backgroundColor: "#4b0082" }}>
               Modifica
             </Button>
           }
@@ -105,7 +104,7 @@ function App() {
                 fontSize: 18,
                 marginTop: 20,
                 fontWeight: "bold",
-                color: "purple",
+                color: "#4b0082",
               }}
             >
               STATISTICHE PERSONALI
