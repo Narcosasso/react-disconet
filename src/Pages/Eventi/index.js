@@ -1,8 +1,15 @@
-import React from "react";
-import { Typography } from "antd";
-const { Title } = Typography;
+import { Typography, Paragraph } from "antd";
+const { Title, Paragraph: AntParagraph } = Typography;
 
-function Eventi() {
-  return <Title>Pagina Eventi</Title>;
+function Home() {
+  return (
+    <>
+      <Title>Eventi</Title>
+      <AntParagraph>
+        Qui puoi visualizzare le ultime novità, gli eventi in programma e tanto altro!
+      </AntParagraph>
+    </>
+  );
 }
-export default Eventi;
+
+export default Home;

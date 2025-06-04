@@ -12,12 +12,10 @@ function MainLayout() {
     message.info("Sei stato disconnesso.");
   };
 
-  // Per evidenziare la voce selezionata nel menu
   const currentKey = location.pathname === "/" ? "/" : location.pathname;
 
   return (
     <Layout className="layout" style={{ minHeight: "100vh" }}>
-      {/* HEADER */}
       <Header style={{ display: "flex", alignItems: "center", padding: "0 30px" }}>
         <div style={{ flex: "1", display: "flex", alignItems: "center", gap: "10px" }}>
           <img src="/dd.jpg" alt="Logo" style={{ height: 50 }} />
@@ -47,12 +45,10 @@ function MainLayout() {
         </div>
       </Header>
 
-      {/* CONTENT */}
       <Content style={{ padding: "50px" }}>
-        <Outlet /> {/* Qui viene renderizzata la pagina attuale */}
+        <Outlet /> {/* Qui viene renderizzato il contenuto delle pagine */}
       </Content>
 
-      {/* FOOTER */}
       <Footer style={{ textAlign: "center" }}>
         Disconet ©2025 Creato con ❤
       </Footer>
