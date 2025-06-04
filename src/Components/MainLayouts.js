@@ -12,18 +12,31 @@ function MainLayout() {
     message.info("Sei stato disconnesso.");
   };
 
-  const currentKey = location.pathname === "/" ? "/" : location.pathname.toLowerCase();
+  const currentKey =
+    location.pathname === "/" ? "/" : location.pathname.toLowerCase();
 
   return (
     <Layout className="layout" style={{ minHeight: "100vh" }}>
-      <Header style={{ display: "flex", alignItems: "center", padding: "0 10px" }}>
-        <div style={{ flex: "1", display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
-         <img src="/dd.jpg" alt="Logo" style={{ height: 40 }} />
-        <Title level={3} style={{ color: "white", margin: 0, whiteSpace: "nowrap" }}>
+      <Header
+        style={{ display: "flex", alignItems: "center", padding: "0 10px" }}
+      >
+        <div
+          style={{
+            flex: "1",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            minWidth: 0,
+          }}
+        >
+          <img src="/dd.jpg" alt="Logo" style={{ height: 40 }} />
+          <Title
+            level={3}
+            style={{ color: "white", margin: 0, whiteSpace: "nowrap" }}
+          >
             Disconet
-        </Title>
-            </div>
-
+          </Title>
+        </div>
 
         <div style={{ flex: "2", display: "flex", justifyContent: "center" }}>
           <Menu
@@ -41,7 +54,12 @@ function MainLayout() {
         </div>
 
         <div style={{ flex: "1", display: "flex", justifyContent: "flex-end" }}>
-          <Button type="primary" danger onClick={handleLogout}>
+          <Button
+            type="primary"
+            style={{ backgroundColor: "purple" }}
+            danger
+            onClick={handleLogout}
+          >
             Logout
           </Button>
         </div>
@@ -52,7 +70,7 @@ function MainLayout() {
       </Content>
 
       <Footer style={{ textAlign: "center" }}>
-        Disconet ©2025 Creato con ❤
+        Disconet ©2025 gruppo 7: Colliva,Sassone,Savino❤
       </Footer>
     </Layout>
   );

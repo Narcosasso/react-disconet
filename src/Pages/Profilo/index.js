@@ -1,7 +1,7 @@
 import "../../App.css";
 import "antd/dist/reset.css";
 import { useEffect, useRef, useState } from "react";
-import { Avatar, Button, Card, Divider, Form, Space } from "antd";
+import { Avatar, Button, Card, Divider, Form, Space, Typography } from "antd";
 import {
   FacebookFilled,
   InstagramOutlined,
@@ -14,9 +14,26 @@ function App() {
     <div className="App-header">
       <Space direction="vertical">
         <Card
-          title="personal profile"
+          title={
+            <div
+              style={{ display: "flex", alignItems: "center", color: "purple" }}
+            >
+              <img
+                src="./erre.png"
+                alt="Logo"
+                style={{
+                  height: 12.5,
+                  marginRight: 8,
+                  alignItems: "center",
+                }} // distanza tra img e testo
+              />
+              <Typography.Text style={{ alignItems: "center" }}>
+                Bar sala Techno
+              </Typography.Text>
+            </div>
+          }
           hoverable={true}
-          style={{ width: 320 }}
+          style={{ width: 600 }}
           actions={[
             //actions serve per aggiungere azioni nella parte inferiore del componente
             <FacebookFilled style={{ color: "purple" }} />,
@@ -41,8 +58,8 @@ function App() {
             </div>
           }
           extra={
-            <Button type="primary" style={{ backgroundColor: "red" }}>
-              Details
+            <Button type="primary" style={{ backgroundColor: "purple" }}>
+              Modifica
             </Button>
           }
         >
@@ -62,12 +79,52 @@ function App() {
                 }
               />
             }
-            title={"Marco Bellinelli"}
-            description="la mia tripla preferita? vodka, redbull e powerade"
+            title={
+              <div
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: 18,
+                }}
+              >
+                Marco Bellinelli
+              </div>
+            }
+            description={
+              <div style={{ textAlign: "center", marginTop: 8 }}>
+                la mia tripla preferita? vodka, redbull e powerade
+              </div>
+            }
           ></Card.Meta>
-          <p style={{ textAlign: "center", marginTop: 30 }}>
-            This is the content of the card
-          </p>
+          <div style={{ textAlign: "center", marginTop: 15 }}>
+            marcobellinelli86@gmail.com <br /> 25/03/1986 <br /> Sesso: M
+            <Divider />
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: 18,
+                marginTop: 20,
+                fontWeight: "bold",
+                color: "purple",
+              }}
+            >
+              STATISTICHE PERSONALI
+            </div>
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: 15,
+                marginTop: 20,
+                marginTop: 10,
+              }}
+            >
+              drink preferito: Jaegerbomb <br />
+              numero drink acquistati: 40 <br />
+              musica preferita: Techno <br />
+              numero party: 46 <br />
+              numero eventi: 31
+            </div>
+          </div>
         </Card>
       </Space>
     </div>

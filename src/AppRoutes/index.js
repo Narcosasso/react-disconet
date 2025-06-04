@@ -7,6 +7,7 @@ import Eventi from "../Pages/Eventi";
 import Drink from "../Pages/Drink";
 import Profilo from "../Pages/Profilo";
 import Party from "../Pages/Party";
+import Login from "../Login";
 
 function AppRoutes() {
   return (
