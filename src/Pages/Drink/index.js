@@ -11,6 +11,7 @@ import {
   Divider,
   message,
 } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 
 const { Title, Paragraph } = Typography;
 
@@ -150,17 +151,15 @@ function Home() {
               <>
                 <List.Item key={index}>
                   {item.name} - €{item.price}
-                  <div
+                  <DeleteOutlined
                     style={{
-                      color: "red",
+                      fontSize: "15px",
+                      color: "#4b0082",
+                      marginLeft: "10px",
                       cursor: "pointer",
-                      marginTop: "8px",
-                      marginLeft: "16px",
                     }}
                     onClick={() => handleRemove(index)}
-                  >
-                    Rimuovi drink
-                  </div>
+                  />
                 </List.Item>
               </>
             )}
