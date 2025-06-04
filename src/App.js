@@ -4,7 +4,7 @@ import AppRoutes from "./AppRoutes";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRoutesssssssssssssssssssr>
       <AppRoutes />
     </BrowserRouter>
   );
