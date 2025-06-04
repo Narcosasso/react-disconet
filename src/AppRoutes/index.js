@@ -1,23 +1,18 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
-import MainLayout from "../Components/MainLayouts";
-
+import MainLayout from "../Pages/MainLayouts";
 import Home from "../Pages/Home";
-import Eventi from "../Pages/Eventi";
 import Drink from "../Pages/Drink";
 import Profilo from "../Pages/Profilo";
 import Party from "../Pages/Party";
-import Login from "../Login";
 
 function AppRoutes() {
   return (
     <Routes>
-      {/* MainLayout contiene header + footer */}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
-        <Route path="/Drink" element={<Drink />} />
-        <Route path="/Profilo" element={<Profilo />} />
-        <Route path="/Party" element={<Party />} />
+        <Route path="drink" element={<Drink />} />
+        <Route path="profilo" element={<Profilo />} />
+        <Route path="party" element={<Party />} />
       </Route>
     </Routes>
   );

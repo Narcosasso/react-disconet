@@ -5,8 +5,9 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import LoginPage from "./Login"; // rinomina il file login
-import Home from "./Pages/Home"; // o la tua dashboard principale
+import LoginPage from "./Login";
+import AppRoutes from "./AppRoutes";
+import "antd/dist/reset.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -15,18 +16,20 @@ function App() {
     <Router>
       <Routes>
         <Route
-          path="/"
+          path="/login"
           element={
             isAuthenticated ? (
-              <Navigate to="/home" />
+              <Navigate to="/" replace />
             ) : (
               <LoginPage onLogin={() => setIsAuthenticated(true)} />
             )
           }
         />
         <Route
-          path="/home"
-          element={isAuthenticated ? <Home /> : <Navigate to="/" />}
+          path="/*"
+          element={
+            isAuthenticated ? <AppRoutes /> : <Navigate to="/login" replace />
+          }
         />
       </Routes>
     </Router>
