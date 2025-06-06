@@ -6,7 +6,8 @@ function Home() {
     <>
       <Title>Sei pronto alla Festa?</Title>
       <AntParagraph>
-        Qui puoi visualizzare le ultime novità, gli eventi in programma e tanto altro!
+        Qui puoi visualizzare le ultime novità, gli eventi in programma e tanto
+        altro!
       </AntParagraph>
     </>
   );
