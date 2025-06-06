@@ -10,8 +10,9 @@ import {
   Drawer,
   Divider,
   message,
+  QRCode,
 } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
 const { Title, Paragraph } = Typography;
 
@@ -61,18 +62,46 @@ const drinks = [
 ];
 
 function Home() {
-  const [purchased, setPurchased] = useState([]);
-  const [visible, setVisible] = useState(false);
+  const [carrello, setCarrello] = useState([]);
+  const [ordini, setOrdini] = useState([]);
+  const [carrelloVisible, setCarrelloVisible] = useState(false);
+  const [ordiniVisible, setOrdiniVisible] = useState(false);
+
+  // Oggetto per tenere traccia di QR visibili, key: indice ordini, value: stringa QR
+  const [visibleQRs, setVisibleQRs] = useState({});
 
   const handleBuy = (drink) => {
-    setPurchased((prev) => [...prev, drink]);
-    setVisible(true);
+    setCarrello((prev) => [...prev, drink]);
+    setCarrelloVisible(true);
   };
 
   const handleRemove = (indexToRemove) => {
-    setPurchased((prevPurchased) =>
-      prevPurchased.filter((_, index) => index !== indexToRemove),
-    );
+    setCarrello((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
+
+  const totale = carrello.reduce((acc, item) => acc + item.price, 0);
+
+  const confermaAcquisto = () => {
+    if (carrello.length === 0) {
+      message.warning("Il carrello è vuoto.");
+      return;
+    }
+    setOrdini((prev) => [...prev, ...carrello]);
+    setCarrello([]);
+    setCarrelloVisible(false);
+    message.success("Acquisto effettuato con successo!");
+  };
+
+  // Funzione per generare un QR Code random e mostrarlo per un drink specifico
+  const generaQR = (index) => {
+    // Genera una stringa random (ad es. UUID-like o semplice random)
+    const randomCode = `drink-ticket-${index}-${Math.random()
+      .toString(36)
+      .substr(2, 9)}`;
+    setVisibleQRs((prev) => ({
+      ...prev,
+      [index]: randomCode,
+    }));
   };
 
   return (
@@ -93,30 +122,40 @@ function Home() {
                 actions={[
                   <Button
                     type="primary"
-                    style={{ backgroundColor: "purple" }}
+                    style={{ backgroundColor: "#4b0082" }}
                     onClick={() => handleBuy(item)}
                   >
-                    Acquista
+                    Aggiungi al Carrello
                   </Button>,
                 ]}
               >
                 <Space direction="vertical" size={0}>
                   <div style={{ fontWeight: "bold" }}>{item.name}</div>
-                  <div style={{ color: "purple" }}>Prezzo: €{item.price}</div>
+                  <div style={{ color: "#4b0082" }}>Prezzo: €{item.price}</div>
                   <div>Gradazione: {item.alcoholContent}%</div>
                   <div>{item.description}</div>
                 </Space>
               </List.Item>
             )}
           />
+
+          <Divider />
+
+          <Button
+            onClick={() => setOrdiniVisible(true)}
+            style={{ backgroundColor: "#4b0082", color: "white" }}
+          >
+            MIEI TICKET
+          </Button>
         </Col>
+
         <Col
           xs={24}
           md={12}
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
           <Image
-            width="81.5%vh" // evita di usare più del 100% se non necessario
+            width="81.5%vh"
             src="./raffa.png"
             alt="Drink"
             style={{ borderRadius: 8 }}
@@ -124,67 +163,133 @@ function Home() {
         </Col>
       </Row>
 
-      <Divider />
-
+      {/* Drawer: Carrello */}
       <Drawer
-        open={visible} //parametro const
+        open={carrelloVisible}
         title={
-          <Title level={3} style={{ color: "purple" }}>
-            Drink Acquistati
+          <Title level={3} style={{ color: "#4b0082", margin: 0 }}>
+            CARRELLO
+            <ShoppingCartOutlined
+              style={{ fontSize: "24px", color: "#4b0082", marginLeft: 8 }}
+            />
           </Title>
         }
-        footer={"Continua ad acquistare con noi!"}
-        closable={true} //X grande per chiudere il drawer
-        maskClosable={true} //abilita la chiusura del drawer quando l’utente clicca fuori
-        onClose={() => {
-          setVisible(false);
-        }}
-        placement="bottom"
+        onClose={() => setCarrelloVisible(false)}
+        placement="right"
+        footer="Conferma i tuoi drink!"
       >
-        {purchased.length === 0 ? (
-          <Paragraph>Nessun drink acquistato ancora.</Paragraph>
+        {carrello.length === 0 ? (
+          <Paragraph>Il carrello è vuoto.</Paragraph>
         ) : (
-          <List
-            bordered
-            dataSource={purchased}
-            renderItem={(item, index) => (
-              <>
+          <>
+            <List
+              bordered
+              dataSource={carrello}
+              renderItem={(item, index) => (
                 <List.Item key={index}>
                   {item.name} - €{item.price}
                   <DeleteOutlined
                     style={{
-                      fontSize: "15px",
+                      marginLeft: 10,
                       color: "#4b0082",
-                      marginLeft: "10px",
                       cursor: "pointer",
                     }}
                     onClick={() => handleRemove(index)}
                   />
                 </List.Item>
-              </>
+              )}
+            />
+            <Divider />
+            <Paragraph>
+              <strong>Totale:</strong> €{totale}
+            </Paragraph>
+          </>
+        )}
+
+        <div style={{ marginTop: 20 }}>
+          <Button
+            onClick={() => setCarrelloVisible(false)}
+            style={{ marginRight: 10 }}
+          >
+            Chiudi
+          </Button>
+          <Button
+            type="primary"
+            style={{ backgroundColor: "#4b0082", color: "white" }}
+            onClick={confermaAcquisto}
+          >
+            Acquista
+          </Button>
+        </div>
+      </Drawer>
+
+      {/* Drawer: Drink Acquistati */}
+      <Drawer
+        open={ordiniVisible}
+        title={
+          <Title level={3} style={{ color: "#4b0082", margin: 0 }}>
+            Drink Acquistati
+          </Title>
+        }
+        onClose={() => setOrdiniVisible(false)}
+        placement="bottom"
+        footer="Grazie per aver ordinato con noi!"
+      >
+        {ordini.length === 0 ? (
+          <Paragraph>Non hai ancora effettuato acquisti.</Paragraph>
+        ) : (
+          <List
+            bordered
+            dataSource={ordini}
+            renderItem={(item, index) => (
+              <List.Item key={index}>
+                <div style={{ width: "100%" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span>
+                      {item.name} - €{item.price}
+                    </span>
+                    {!visibleQRs[index] && (
+                      <Button
+                        type="primary"
+                        style={{ backgroundColor: "#4b0082", color: "white" }}
+                        onClick={() => generaQR(index)}
+                      >
+                        Genera QR Code
+                      </Button>
+                    )}
+                  </div>
+
+                  {visibleQRs[index] && (
+                    <div style={{ marginTop: 10 }}>
+                      <QRCode value={visibleQRs[index]} />
+                      <div style={{ marginTop: 8 }}>
+                        <Button
+                          type="default"
+                          style={{ backgroundColor: "#4b0082", color: "white" }}
+                          onClick={() =>
+                            setVisibleQRs((prev) => {
+                              const updated = { ...prev };
+                              delete updated[index];
+                              return updated;
+                            })
+                          }
+                        >
+                          chiudi codice QR
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </List.Item>
             )}
           />
         )}
-
-        <Button
-          onClick={() => {
-            setVisible(false);
-          }}
-          style={{ backgroundColor: "red", color: "white", marginTop: 20 }}
-        >
-          Close
-        </Button>
-
-        <Button
-          onClick={() => {
-            setVisible(false);
-            message.success("Acquisto effettuato con successo!");
-            setPurchased([]);
-          }}
-          style={{ backgroundColor: "purple", color: "white", marginTop: 20 }}
-        >
-          Buy
-        </Button>
       </Drawer>
     </>
   );

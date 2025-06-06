@@ -75,6 +75,7 @@ function MainLayout({ onLogout }) {
             danger
             onClick={handleLogout}
             className="custom-logout"
+            style={{ backgroundColor: "black", color: "white" }}
           >
             Logout
           </Button>

@@ -1,3 +1,4 @@
+// App.js
 import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -6,13 +7,13 @@ import {
   Navigate,
 } from "react-router-dom";
 import LoginPage from "./Login";
+import RegisterPage from "./Register";
 import AppRoutes from "./AppRoutes";
 import "antd/dist/reset.css";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Al primo caricamento, controlla se c'è autenticazione salvata
   useEffect(() => {
     const savedAuth = localStorage.getItem("isAuthenticated");
     if (savedAuth === "true") {
@@ -20,7 +21,6 @@ function App() {
     }
   }, []);
 
-  // Quando cambia autenticazione, aggiorna localStorage
   useEffect(() => {
     localStorage.setItem("isAuthenticated", isAuthenticated);
   }, [isAuthenticated]);
@@ -38,6 +38,7 @@ function App() {
             )
           }
         />
+        <Route path="/register" element={<RegisterPage />} />
         <Route
           path="/*"
           element={

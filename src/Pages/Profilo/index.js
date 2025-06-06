@@ -1,13 +1,7 @@
 import "../../App.css";
 import "antd/dist/reset.css";
 import { useEffect, useRef, useState } from "react";
-import { Avatar, Button, Card, Divider, Form, Space, Typography } from "antd";
-import {
-  FacebookFilled,
-  InstagramOutlined,
-  TwitterOutlined,
-  YoutubeFilled,
-} from "@ant-design/icons";
+import { Avatar, Button, Card, Divider, Space, Typography } from "antd";
 
 function App() {
   return (
@@ -25,7 +19,7 @@ function App() {
                   height: 12.5,
                   marginRight: 8,
                   alignItems: "center",
-                }} // distanza tra img e testo
+                }}
               />
               <Typography.Text style={{ alignItems: "center" }}>
                 Bar sala Techno
@@ -34,13 +28,6 @@ function App() {
           }
           hoverable={true}
           style={{ width: 600 }}
-          actions={[
-            //actions serve per aggiungere azioni nella parte inferiore del componente
-            <FacebookFilled style={{ color: "purple" }} />,
-            <TwitterOutlined style={{ color: "purple" }} />,
-            <InstagramOutlined style={{ color: "purple" }} />,
-            <YoutubeFilled style={{ color: "purple" }} />,
-          ]}
           cover={
             <div
               style={{
@@ -69,15 +56,7 @@ function App() {
               marginTop: -60,
               alignItems: "center",
             }}
-            avatar={
-              <Avatar
-                size={150}
-                marginTop={-1000}
-                src={
-                  "https://www.sportfair.it/wp-content/uploads/2019/03/Marco-Belinelli.jpg"
-                }
-              />
-            }
+            avatar={<Avatar size={150} src={"/effe.jpg"} />}
             title={
               <div
                 style={{
@@ -113,13 +92,10 @@ function App() {
               style={{
                 textAlign: "center",
                 fontSize: 15,
-                marginTop: 20,
                 marginTop: 10,
               }}
             >
-              drink preferito: Jaegerbomb <br />
               numero drink acquistati: 40 <br />
-              musica preferita: Techno <br />
               numero party: 46 <br />
               numero eventi: 31
             </div>

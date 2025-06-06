@@ -1,12 +1,28 @@
-import { Button, Divider, Form, Input, Space, Typography, message } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Space,
+  Typography,
+  message,
+  DatePicker,
+  Select,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 
-function LoginPage({ onLogin }) {
+const { Option } = Select;
+
+function Register() {
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    message.success("Login effettuato");
-    onLogin();
+  const handleRegister = (values) => {
+    if (values.password !== values.confirmPassword) {
+      message.error("Le password non coincidono");
+      return;
+    }
+
+    console.log("Registrazione:", values);
+    message.success("Registrazione completata!");
     navigate("/");
   };
 
@@ -84,7 +100,7 @@ function LoginPage({ onLogin }) {
           }}
         >
           <Space direction="vertical" style={{ width: "100%" }}>
-            <Form className="loginForm" onFinish={handleLogin}>
+            <Form onFinish={handleRegister} layout="vertical">
               <Typography.Title
                 style={{
                   fontSize: "28px",
@@ -93,25 +109,65 @@ function LoginPage({ onLogin }) {
                   marginLeft: "18px",
                 }}
               >
-                Connettiti alla Festa
+                Registrati alla Festa
               </Typography.Title>
 
               <Form.Item
-                colon={false}
-                label={<span style={{ color: "white" }}>Username: </span>}
                 name="username"
+                label={<span style={{ color: "white" }}>Username</span>}
                 rules={[{ required: true, message: "Inserisci l'username" }]}
               >
-                <Input placeholder="email" />
+                <Input />
               </Form.Item>
 
               <Form.Item
-                colon={false}
-                label={<span style={{ color: "white" }}>Password: </span>}
+                name="email"
+                label={<span style={{ color: "white" }}>Email</span>}
+                rules={[{ required: true, message: "Inserisci l'email" }]}
+              >
+                <Input />
+              </Form.Item>
+
+              {/* Data di nascita */}
+              <Form.Item
+                name="birthDate"
+                label={<span style={{ color: "white" }}>Data di nascita</span>}
+                rules={[
+                  { required: true, message: "Inserisci la data di nascita" },
+                ]}
+              >
+                <DatePicker style={{ width: "100%" }} />
+              </Form.Item>
+
+              {/* Sesso */}
+              <Form.Item
+                name="gender"
+                label={<span style={{ color: "white" }}>Sesso</span>}
+                rules={[{ required: true, message: "Seleziona il sesso" }]}
+              >
+                <Select placeholder="Seleziona il sesso">
+                  <Option value="maschio">Maschio</Option>
+                  <Option value="femmina">Femmina</Option>
+                  <Option value="altro">Altro</Option>
+                </Select>
+              </Form.Item>
+
+              <Form.Item
                 name="password"
+                label={<span style={{ color: "white" }}>Password</span>}
                 rules={[{ required: true, message: "Inserisci la password" }]}
               >
-                <Input.Password placeholder="password" />
+                <Input.Password />
+              </Form.Item>
+
+              <Form.Item
+                name="confirmPassword"
+                label={
+                  <span style={{ color: "white" }}>Conferma Password</span>
+                }
+                rules={[{ required: true, message: "Conferma la password" }]}
+              >
+                <Input.Password />
               </Form.Item>
 
               <Button
@@ -123,22 +179,22 @@ function LoginPage({ onLogin }) {
                   color: "white",
                 }}
               >
-                Login
+                Registrati
               </Button>
 
               <Typography.Paragraph
                 style={{
                   marginTop: "40px",
                   color: "white",
-                  marginLeft: "103px",
+                  marginLeft: "100px",
                 }}
               >
-                o registrati{" "}
+                Hai già un account?{" "}
                 <a
-                  href="/register"
+                  href="/"
                   style={{ color: "#4b0082", textDecoration: "underline" }}
                 >
-                  qui
+                  Accedi qui
                 </a>
               </Typography.Paragraph>
             </Form>
@@ -149,4 +205,4 @@ function LoginPage({ onLogin }) {
   );
 }
 
-export default LoginPage;
+export default Register;
