@@ -1,12 +1,14 @@
-import { Layout, Menu, Typography, Button, message } from "antd";
+import { Layout, Menu, Typography, Button, message, Grid } from "antd";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
+const { useBreakpoint } = Grid;
 
 function MainLayout({ onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
+  const screens = useBreakpoint();
 
   const handleLogout = () => {
     message.info("Sei stato disconnesso.");
@@ -27,13 +29,21 @@ function MainLayout({ onLogout }) {
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between", // dividi in sinistra e destra
+          justifyContent: "space-between",
           padding: "0 16px",
           backgroundColor: darkPurple,
         }}
       >
         {/* LOGO + Disconet */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            flexDirection: screens.xs ? "column" : "row",
+            textAlign: screens.xs ? "center" : "left",
+          }}
+        >
           <div style={{ filter: "drop-shadow(0 0 6px white)" }}>
             <img src="/IMG_5786.png" alt="Logo" style={{ height: 60 }} />
           </div>
@@ -43,6 +53,8 @@ function MainLayout({ onLogout }) {
               color: "white",
               margin: 0,
               cursor: "default",
+              fontSize: screens.xs ? 20 : 32,
+              textAlign: screens.xs ? "center" : "left",
             }}
             className="disconet-title"
           >
@@ -50,7 +62,7 @@ function MainLayout({ onLogout }) {
           </Title>
         </div>
 
-        {/* MENU + LOGOUT raggruppati a destra */}
+        {/* MENU + LOGOUT */}
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <Menu
             theme="dark"

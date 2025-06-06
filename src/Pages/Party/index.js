@@ -13,6 +13,7 @@ function Party() {
       data: "07 Giugno 2025",
       orarioInizio: "22:00",
       orarioFine: "03:00",
+      etaMinima: 18,
       isPast: false,
     },
     {
@@ -23,6 +24,7 @@ function Party() {
       data: "08 Giugno 2025",
       orarioInizio: "23:30",
       orarioFine: "05:00",
+      etaMinima: 21,
       isPast: false,
     },
     {
@@ -33,6 +35,7 @@ function Party() {
       data: "01 Giugno 2025",
       orarioInizio: "21:30",
       orarioFine: "01:00",
+      etaMinima: 16,
       isPast: true,
     },
   ];
@@ -93,7 +96,7 @@ function Party() {
                 <br />
                 <Text strong>Fine:</Text> <Text>{party.orarioFine}</Text>
                 <br />
-                <Text strong>Sala:</Text> <Text>{party.sala}</Text>
+                <Text strong>Età minima:</Text> <Text>{party.etaMinima}+</Text>
                 <br />
                 <Text strong>Prezzo:</Text> <Text>{party.price}</Text>
                 <div style={{ marginTop: 12 }}>

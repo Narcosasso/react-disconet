@@ -7,12 +7,11 @@ import {
   Image,
   Button,
   Space,
-  Drawer,
+  Modal,
   Divider,
   message,
-  QRCode,
 } from "antd";
-import { DeleteOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { QRCode } from "antd";
 
 const { Title, Paragraph } = Typography;
 
@@ -62,46 +61,64 @@ const drinks = [
 ];
 
 function Home() {
+  const [modalVisible, setModalVisible] = useState(false);
   const [carrello, setCarrello] = useState([]);
   const [ordini, setOrdini] = useState([]);
-  const [carrelloVisible, setCarrelloVisible] = useState(false);
-  const [ordiniVisible, setOrdiniVisible] = useState(false);
-
-  // Oggetto per tenere traccia di QR visibili, key: indice ordini, value: stringa QR
+  const [selectedDrink, setSelectedDrink] = useState(null);
   const [visibleQRs, setVisibleQRs] = useState({});
+  const [ticketModalVisible, setTicketModalVisible] = useState(false);
 
   const handleBuy = (drink) => {
-    setCarrello((prev) => [...prev, drink]);
-    setCarrelloVisible(true);
+    setSelectedDrink(drink);
+    setModalVisible(true);
   };
 
-  const handleRemove = (indexToRemove) => {
-    setCarrello((prev) => prev.filter((_, index) => index !== indexToRemove));
+  const modificaQuantita = (delta) => {
+    setCarrello((prev) => {
+      const index = prev.findIndex((item) => item.name === selectedDrink.name);
+      if (index !== -1) {
+        const newCart = [...prev];
+        const newQuantity = newCart[index].quantity + delta;
+        if (newQuantity <= 0) newCart.splice(index, 1);
+        else newCart[index].quantity = newQuantity;
+        return newCart;
+      } else if (delta > 0) {
+        return [...prev, { ...selectedDrink, quantity: 1 }];
+      }
+      return prev;
+    });
   };
 
-  const totale = carrello.reduce((acc, item) => acc + item.price, 0);
+  const totale = carrello.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
+
+  const getQuantitaSelezionata = () => {
+    const drink = carrello.find((item) => item.name === selectedDrink?.name);
+    return drink?.quantity || 0;
+  };
 
   const confermaAcquisto = () => {
     if (carrello.length === 0) {
       message.warning("Il carrello è vuoto.");
       return;
     }
-    setOrdini((prev) => [...prev, ...carrello]);
+    const ordiniConQuantità = carrello.flatMap((item) =>
+      Array(item.quantity).fill({
+        name: item.name,
+        price: item.price,
+      }),
+    );
+    setOrdini((prev) => [...prev, ...ordiniConQuantità]);
     setCarrello([]);
-    setCarrelloVisible(false);
+    setModalVisible(false);
     message.success("Acquisto effettuato con successo!");
   };
 
-  // Funzione per generare un QR Code random e mostrarlo per un drink specifico
   const generaQR = (index) => {
-    // Genera una stringa random (ad es. UUID-like o semplice random)
-    const randomCode = `drink-ticket-${index}-${Math.random()
-      .toString(36)
-      .substr(2, 9)}`;
-    setVisibleQRs((prev) => ({
-      ...prev,
-      [index]: randomCode,
-    }));
+    const randomCode = `drink-ticket-${index}-${Math.random().toString(36).substr(2, 9)}`;
+    setVisibleQRs((prev) => ({ ...prev, [index]: randomCode }));
   };
 
   return (
@@ -125,7 +142,7 @@ function Home() {
                     style={{ backgroundColor: "#4b0082" }}
                     onClick={() => handleBuy(item)}
                   >
-                    Aggiungi al Carrello
+                    Ordina
                   </Button>,
                 ]}
               >
@@ -138,24 +155,10 @@ function Home() {
               </List.Item>
             )}
           />
-
-          <Divider />
-
-          <Button
-            onClick={() => setOrdiniVisible(true)}
-            style={{ backgroundColor: "#4b0082", color: "white" }}
-          >
-            MIEI TICKET
-          </Button>
         </Col>
-
-        <Col
-          xs={24}
-          md={12}
-          style={{ display: "flex", justifyContent: "flex-end" }}
-        >
+        <Col xs={24} md={12}>
           <Image
-            width="81.5%vh"
+            width="100%"
             src="./raffa.png"
             alt="Drink"
             style={{ borderRadius: 8 }}
@@ -163,134 +166,97 @@ function Home() {
         </Col>
       </Row>
 
-      {/* Drawer: Carrello */}
-      <Drawer
-        open={carrelloVisible}
-        title={
-          <Title level={3} style={{ color: "#4b0082", margin: 0 }}>
-            CARRELLO
-            <ShoppingCartOutlined
-              style={{ fontSize: "24px", color: "#4b0082", marginLeft: 8 }}
-            />
-          </Title>
-        }
-        onClose={() => setCarrelloVisible(false)}
-        placement="right"
-        footer="Conferma i tuoi drink!"
+      <Modal
+        open={modalVisible}
+        title={selectedDrink?.name}
+        onCancel={() => setModalVisible(false)}
+        footer={null}
       >
-        {carrello.length === 0 ? (
-          <Paragraph>Il carrello è vuoto.</Paragraph>
-        ) : (
-          <>
-            <List
-              bordered
-              dataSource={carrello}
-              renderItem={(item, index) => (
-                <List.Item key={index}>
-                  {item.name} - €{item.price}
-                  <DeleteOutlined
-                    style={{
-                      marginLeft: 10,
-                      color: "#4b0082",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => handleRemove(index)}
-                  />
-                </List.Item>
-              )}
-            />
-            <Divider />
-            <Paragraph>
-              <strong>Totale:</strong> €{totale}
-            </Paragraph>
-          </>
-        )}
+        <Paragraph>{selectedDrink?.description}</Paragraph>
+        <Paragraph>Prezzo: €{selectedDrink?.price}</Paragraph>
+        <Paragraph>Gradazione: {selectedDrink?.alcoholContent}%</Paragraph>
+        <Paragraph>Quantità selezionata: {getQuantitaSelezionata()}</Paragraph>
+        <Space style={{ marginBottom: 20 }}>
+          <Button onClick={() => modificaQuantita(-1)}>-</Button>
+          <Button onClick={() => modificaQuantita(1)}>+</Button>
+        </Space>
+        <Divider />
+        <Paragraph>
+          <strong>Totale:</strong> €{totale}
+        </Paragraph>
+        <Button
+          type="primary"
+          style={{ backgroundColor: "#4b0082", color: "white" }}
+          onClick={confermaAcquisto}
+        >
+          Acquista
+        </Button>
+      </Modal>
 
-        <div style={{ marginTop: 20 }}>
-          <Button
-            onClick={() => setCarrelloVisible(false)}
-            style={{ marginRight: 10 }}
-          >
-            Chiudi
-          </Button>
-          <Button
-            type="primary"
-            style={{ backgroundColor: "#4b0082", color: "white" }}
-            onClick={confermaAcquisto}
-          >
-            Acquista
-          </Button>
-        </div>
-      </Drawer>
-
-      {/* Drawer: Drink Acquistati */}
-      <Drawer
-        open={ordiniVisible}
-        title={
-          <Title level={3} style={{ color: "#4b0082", margin: 0 }}>
-            Drink Acquistati
-          </Title>
-        }
-        onClose={() => setOrdiniVisible(false)}
-        placement="bottom"
-        footer="Grazie per aver ordinato con noi!"
+      <Divider />
+      <Button
+        type="primary"
+        style={{ backgroundColor: "#4b0082", marginBottom: 16 }}
+        onClick={() => setTicketModalVisible(true)}
       >
-        {ordini.length === 0 ? (
-          <Paragraph>Non hai ancora effettuato acquisti.</Paragraph>
-        ) : (
-          <List
-            bordered
-            dataSource={ordini}
-            renderItem={(item, index) => (
-              <List.Item key={index}>
-                <div style={{ width: "100%" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span>
-                      {item.name} - €{item.price}
-                    </span>
-                    {!visibleQRs[index] && (
-                      <Button
-                        type="primary"
-                        style={{ backgroundColor: "#4b0082", color: "white" }}
-                        onClick={() => generaQR(index)}
-                      >
-                        Genera QR Code
-                      </Button>
-                    )}
-                  </div>
+        Mostra i miei ticket
+      </Button>
 
-                  {visibleQRs[index] && (
-                    <div style={{ marginTop: 10 }}>
-                      <QRCode value={visibleQRs[index]} />
-                      <div style={{ marginTop: 8 }}>
-                        <Button
-                          type="default"
-                          style={{ backgroundColor: "#4b0082", color: "white" }}
-                          onClick={() =>
-                            setVisibleQRs((prev) => {
-                              const updated = { ...prev };
-                              delete updated[index];
-                              return updated;
-                            })
-                          }
-                        >
-                          chiudi codice QR
-                        </Button>
-                      </div>
-                    </div>
+      <Modal
+        open={ticketModalVisible}
+        title="I miei Ticket"
+        footer={null}
+        onCancel={() => setTicketModalVisible(false)}
+      >
+        <List
+          bordered
+          dataSource={ordini}
+          renderItem={(item, index) => (
+            <List.Item>
+              <div style={{ width: "100%" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <span>
+                    {item.name} - €{item.price}
+                  </span>
+                  {!visibleQRs[index] && (
+                    <Button
+                      type="primary"
+                      style={{ backgroundColor: "#4b0082", color: "white" }}
+                      onClick={() => generaQR(index)}
+                    >
+                      Usa Ticket
+                    </Button>
                   )}
                 </div>
-              </List.Item>
-            )}
-          />
-        )}
-      </Drawer>
+                {visibleQRs[index] && (
+                  <div style={{ marginTop: 10 }}>
+                    <QRCode value={visibleQRs[index]} />
+                    <div style={{ marginTop: 8 }}>
+                      <Button
+                        type="default"
+                        style={{ backgroundColor: "#4b0082", color: "white" }}
+                        onClick={() => {
+                          const updated = { ...visibleQRs };
+                          delete updated[index];
+                          setVisibleQRs(updated);
+                        }}
+                      >
+                        Chiudi QR
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </List.Item>
+          )}
+        />
+      </Modal>
     </>
   );
 }
