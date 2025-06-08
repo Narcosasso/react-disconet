@@ -7,7 +7,7 @@ function Party() {
   const initialParties = [
     {
       title: "Electro Jungle @ Sala Trap",
-      image: "./sfera.jpg",
+      image: "./foto3.jpg",
       description: "Un viaggio sonoro tra ritmi tribali e bassi elettronici.",
       price: "10€",
       data: "07 Giugno 2025",
@@ -18,7 +18,7 @@ function Party() {
     },
     {
       title: "Neon Night - Techno fino all'alba",
-      image: "./tecno.jpg",
+      image: "./foto4.jpg",
       description: "Dress code fluo, energia pura e laser show.",
       price: "15€",
       data: "08 Giugno 2025",
@@ -29,7 +29,7 @@ function Party() {
     },
     {
       title: "Back to 2000s",
-      image: "./2000.jpg",
+      image: "./foto2.jpg",
       description: "Hits anni 2000, outfit a tema e nostalgia pura.",
       price: "12€",
       data: "01 Giugno 2025",

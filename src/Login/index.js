@@ -70,7 +70,7 @@ function LoginPage({ onLogin }) {
       <Space direction="horizontal" size={100} style={{ zIndex: 2 }}>
         <div style={{ display: "flex", justifyContent: "left" }}>
           <img
-            src="/IMG_5786.png"
+            src="/foto8.png"
             alt="Logo"
             style={{ width: 500, marginBottom: 24 }}
           />

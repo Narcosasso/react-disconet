@@ -13,7 +13,7 @@ function App() {
               style={{ display: "flex", alignItems: "center", color: "purple" }}
             >
               <img
-                src="./erre.png"
+                src="./foto10.png"
                 alt="Logo"
                 style={{
                   height: 12.5,
@@ -56,7 +56,7 @@ function App() {
               marginTop: -60,
               alignItems: "center",
             }}
-            avatar={<Avatar size={150} src={"/effe.jpg"} />}
+            avatar={<Avatar size={150} src={"/foto9.jpg"} />}
             title={
               <div
                 style={{

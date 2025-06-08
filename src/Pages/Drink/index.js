@@ -159,7 +159,7 @@ function Home() {
         <Col xs={24} md={12}>
           <Image
             width="100%"
-            src="./raffa.png"
+            src="./foto11.png"
             alt="Drink"
             style={{ borderRadius: 8 }}
           />

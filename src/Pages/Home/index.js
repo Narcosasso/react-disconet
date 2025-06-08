@@ -10,7 +10,7 @@ function Home() {
   const initialEventi = [
     {
       title: "Gara di Limbo alla Sala Trap",
-      image: "./limbo2.jpeg",
+      image: "./foto7.jpeg",
       isPast: false,
       description:
         "Sfida i tuoi amici in una gara di limbo con DJ set dal vivo!",
@@ -21,7 +21,7 @@ function Home() {
     },
     {
       title: "Silent Disco nel giardino urbano",
-      image: "./silent-disco.jpg",
+      image: "./foto6.jpg",
       isPast: false,
       description: "Tre canali musicali per ballare in cuffia sotto le stelle.",
       postiDisponibili: 50,
@@ -31,7 +31,7 @@ function Home() {
     },
     {
       title: "Notte Drag Queen – Show imperdibile",
-      image: "./drag.jpg",
+      image: "./foto5.jpg",
       isPast: true,
       description:
         "Uno spettacolo esplosivo con le migliori Drag Queen della città.",
@@ -42,7 +42,7 @@ function Home() {
     },
     {
       title: "Party 80s – Revival Edition",
-      image: "./anni.jpeg",
+      image: "./foto1.jpeg",
       isPast: true,
       description:
         "Tutti i successi anni '80 in una serata a tema con dress code!",

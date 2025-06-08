@@ -29,7 +29,7 @@ const users = [
 const fixedUser = {
   id: 99,
   name: "Bellinelli86",
-  avatar: "/effe.jpg", // sostituisci con il tuo URL o percorso immagine reale
+  avatar: "/foto9.jpg", // sostituisci con il tuo URL o percorso immagine reale
 };
 
 function ChatGlobale() {

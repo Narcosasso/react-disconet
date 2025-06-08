@@ -45,7 +45,7 @@ function MainLayout({ onLogout }) {
           }}
         >
           <div style={{ filter: "drop-shadow(0 0 6px white)" }}>
-            <img src="/IMG_5786.png" alt="Logo" style={{ height: 60 }} />
+            <img src="/foto8.png" alt="Logo" style={{ height: 60 }} />
           </div>
           <Title
             level={3}
